@@ -44,4 +44,56 @@ void ex07()
 		std::cout << u * v << '\n';
 	}
 
+	{
+		Matrix<2, 2, double> u({
+			{ 1., 0. },
+			{ 0., 1. }
+		});
+
+		Matrix<2, 2, double> v({
+			{ 1., 0.},
+			{ 0., 1.}
+		});
+		std::cout << '\n' << u * v << '\n';
+	}
+
+	{
+		Matrix<2, 2, double> u({
+			{ 1., 0. },
+			{ 0., 1. }
+		});
+
+		Matrix<2, 2, double> v({
+			{ 2., 1.},
+			{ 4., 2.}
+		});
+		std::cout << u * v << '\n';
+	}
+
+	{
+		Matrix<2, 2, double> u({
+			{ 3., -5. },
+			{ 6., 8. }
+		});
+
+		Matrix<2, 2, double> v({
+			{ 2., 1.},
+			{ 4., 2.}
+		});
+		std::cout << u * v << '\n';
+	}
+
+	{
+		Matrix<3, 2, double> u({
+			{ 3., -5. },
+			{ 6., 8. },
+			{ 21., 18. },
+		});
+
+		Matrix<2, 3, double> v({
+			{ 2., 1., 0. },
+			{ 4., 2., 0. }
+		});
+		std::cout << v * u << '\n';
+	}	
 }

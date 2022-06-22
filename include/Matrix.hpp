@@ -6,14 +6,13 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/05 15:24:38 by mamartin          #+#    #+#             */
-/*   Updated: 2022/06/10 00:30:36 by mamartin         ###   ########.fr       */
+/*   Updated: 2022/06/13 16:45:16 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MATRIX_HPP
 # define MATRIX_HPP
 
-# include <tuple>
 # include "Vector.hpp"
 
 template <length_t Rows, length_t Columns, typename T>
@@ -51,6 +50,65 @@ struct Matrix
 
 		constexpr bool isSquare() const { return Rows == Columns; }
 		constexpr Shape getShape() const { return { Rows, Columns }; }
+
+		T trace() const
+		{
+			static_assert(Rows == Columns, "Trace function is not defined for non-square matrices");
+			T sum = T();
+			for (size_t i = 0; i < _mData.size(); i++)
+				sum += _mData[i][i];
+			return sum;
+		}
+
+		Matrix<Columns, Rows, T> transpose() const
+		{
+			Matrix<Columns, Rows, T> result;
+
+			for (length_t i = 0; i < Rows; i++)
+			{
+				for (length_t j = 0; j < Columns; j++)
+					result[j][i] = _mData[i][j];
+			}
+			return result;
+		}
+
+		Matrix& row_echelon()
+		{
+			int lead = 0;
+
+			for (int row = 0; row < Rows; row++)
+			{
+				if (Columns <= lead)
+					return *this;
+
+				int i = row;
+				while (_mData[i][lead] == 0)
+				{
+					i++;
+					if (i == Rows)
+					{
+						i = row;
+						lead++;
+						if (Columns == lead)
+							return *this;
+					}
+				}
+
+				if (i != row)
+					std::swap(_mData[i], _mData[row]);
+				_mData[row] /= _mData[row][lead];
+
+				for (int j = 0; j < Rows; j++)
+				{
+					if (j != row)
+						_mData[j] -= _mData[row] * _mData[j][lead];
+				}
+
+				lead++;
+			}
+
+			return *this;
+		}
 
 		Matrix& operator=(const Matrix& rhs)
 		{
@@ -96,15 +154,6 @@ struct Matrix
 			return result;
 		}
 
-		// VectorType operator*(const VectorType& rhs) const
-		// {
-		// 	VectorType result;
-
-		// 	for (size_t i = 0; i < _mData.size(); i++)
-		// 		result[i] = _mData[i].dot(rhs);
-		// 	return result;
-		// }
-
 		const VectorType& operator[](length_t n) const
 		{
 			return _mData.at(n);
@@ -135,6 +184,25 @@ Matrix<R, C, T> lerp(const Matrix<R, C, T>& u, const Matrix<R, C, T>& v, float t
 
 	for (length_t i = 0; i < C; i++)
 		result[i] = lerp(u[i], v[i], t);
+	return result;
+}
+
+template <length_t M, length_t N, length_t P, typename T>
+Matrix<M, P, T> operator*(const Matrix<M, N, T>& lhs, const Matrix<N, P, T>& rhs)
+{
+	auto dot_product = [&](length_t row, length_t col) {
+		T sum = T();
+		for (length_t i = 0; i < N; i++)
+			sum = std::fma(lhs[row][i], rhs[i][col], sum);
+		return sum;
+	};
+
+	Matrix<M, P, T> result;
+	for (length_t row = 0; row < M; row++)
+	{
+		for (length_t col = 0; col < P; col++)
+			result[row][col] = dot_product(row, col);
+	}
 	return result;
 }
 

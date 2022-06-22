@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/05 15:20:58 by mamartin          #+#    #+#             */
-/*   Updated: 2022/06/09 23:52:55 by mamartin         ###   ########.fr       */
+/*   Updated: 2022/06/13 16:41:51 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,12 @@ public:
 		return *this + (-rhs);
 	}
 
+	Vector& operator-=(const Vector& rhs)
+	{
+		*this = operator-(rhs);
+		return *this;
+	}
+
 	Vector operator*(const T &n) const
 	{
 		Vector result;
@@ -119,6 +125,23 @@ public:
 		for (length_t i = 0; i < L; i++)
 			result[i] = _mData[i] * n;
 		return result;
+	}
+
+	Vector& operator*=(const T &n)
+	{
+		*this = operator*(n);
+		return *this;
+	}
+
+	Vector operator/(const T &n) const
+	{
+		return *this * (1 / n);
+	}
+
+	Vector& operator/=(const T &n)
+	{
+		*this = operator/(n);
+		return *this;
 	}
 
 	friend std::ostream& operator<<(std::ostream &os, const Vector&v)
