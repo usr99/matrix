@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/05 15:24:38 by mamartin          #+#    #+#             */
-/*   Updated: 2022/06/13 16:45:16 by mamartin         ###   ########.fr       */
+/*   Updated: 2022/06/23 17:15:14 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,11 @@ struct Matrix
 			}
 
 			return *this;
+		}
+
+		T determinant() const
+		{
+			return T();
 		}
 
 		Matrix& operator=(const Matrix& rhs)
