@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/05 15:24:38 by mamartin          #+#    #+#             */
-/*   Updated: 2022/06/23 17:15:14 by mamartin         ###   ########.fr       */
+/*   Updated: 2022/06/24 14:17:26 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,67 @@ struct Matrix
 		T determinant() const
 		{
 			return T();
+		}
+
+		Matrix inverse()
+		{
+			Matrix identity;
+			int lead = 0;
+
+			// compute the reduced row echelon form of the matrix
+			// and mirror the transformations on an identity matrix
+			for (int row = 0; row < Rows; row++)
+			{
+				if (Columns <= lead)
+					break ;
+
+				int i = row;
+				while (lead != Columns && _mData[i][lead] == 0)
+				{
+					i++;
+					if (i == Rows)
+					{
+						i = row;
+						lead++;
+					}
+
+				}
+				if (Columns == lead)
+					break ;
+				
+				if (i != row)
+				{
+					std::swap(_mData[i], _mData[row]);
+					std::swap(identity._mData[i], identity._mData[row]);
+				}
+				identity._mData[row] /= _mData[row][lead];
+				_mData[row] /= _mData[row][lead];
+
+				for (int j = 0; j < Rows; j++)
+				{
+					if (j != row)
+					{
+						identity._mData[j] -= identity._mData[row] * _mData[j][lead];
+						_mData[j] -= _mData[row] * _mData[j][lead];
+					}
+				}
+
+				lead++;
+			}
+
+			// check that the reduced row echelon form is an identity matrix
+			// if not, then the matrix was singular so it has no inverse
+			for (size_t i = 0; i < _mData.size(); i++)
+			{
+				for (size_t j = 0; j < _mData.size(); j++)
+				{
+					if (_mData[i][j] != (i == j))
+						throw std::invalid_argument("Singular matrices have no inverse");
+				}
+			}
+
+			*this = identity;
+			return *this;
 		}
 
 		Matrix& operator=(const Matrix& rhs)
