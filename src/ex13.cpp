@@ -1,41 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ex10.cpp                                           :+:      :+:    :+:   */
+/*   ex13.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/09 23:49:55 by mamartin          #+#    #+#             */
-/*   Updated: 2022/06/24 16:47:30 by mamartin         ###   ########.fr       */
+/*   Created: 2022/06/24 14:21:53 by mamartin          #+#    #+#             */
+/*   Updated: 2022/06/24 16:59:33 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Tests.hpp"
 
-void ex10()
+void ex13()
 {
 	{
 		Matrix<3, 3, double> u;
-
-		std::cout << u.row_echelon() << '\n';
+		std::cout << u.rank() << '\n';
 	}
 
 	{
-		Matrix<2, 2, double> u({
-			{ 1., 2. }, 
-			{ 3., 4. }
+		Matrix<3, 4, double> u({
+			{  1, 2, 0, 0 },
+			{  2, 4, 0, 0 },
+			{ -1, 2, 1, 1 },
 		});
-
-		std::cout << u.row_echelon() << '\n';
+		std::cout << u.rank() << '\n';
 	}
 
 	{
-		Matrix<2, 2, double> u({
-			{ 1., 2. },
-			{ 2., 4. }
+		Matrix<4, 3, double> u({
+			{ 8,  5,  -2 },
+			{ 4,  7,  20 },
+			{ 7,  6,  1 },
+			{ 21, 18, 7 },
 		});
-
-		std::cout << u.row_echelon() << '\n';
+		std::cout << u.rank() << '\n';
 	}
 
 	{
@@ -45,6 +45,6 @@ void ex10()
 			{8., 5., 1., 4., 17.}
 		});
 
-		std::cout << u.row_echelon() << '\n';
-	}
+		std::cout << u.rank() << '\n';
+	}	
 }

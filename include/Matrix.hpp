@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/05 15:24:38 by mamartin          #+#    #+#             */
-/*   Updated: 2022/06/24 14:17:26 by mamartin         ###   ########.fr       */
+/*   Updated: 2022/06/24 17:00:36 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,17 +72,18 @@ struct Matrix
 			return result;
 		}
 
-		Matrix& row_echelon()
+		Matrix row_echelon() const
 		{
-			int lead = 0;
+			Matrix result = *this;
+			length_t lead = 0;
 
-			for (int row = 0; row < Rows; row++)
+			for (length_t row = 0; row < Rows; row++)
 			{
 				if (Columns <= lead)
-					return *this;
+					return result;
 
-				int i = row;
-				while (_mData[i][lead] == 0)
+				length_t i = row;
+				while (result._mData[i][lead] == 0)
 				{
 					i++;
 					if (i == Rows)
@@ -90,24 +91,24 @@ struct Matrix
 						i = row;
 						lead++;
 						if (Columns == lead)
-							return *this;
+							return result;
 					}
 				}
 
 				if (i != row)
-					std::swap(_mData[i], _mData[row]);
-				_mData[row] /= _mData[row][lead];
+					std::swap(result._mData[i], result._mData[row]);
+				result._mData[row] /= result._mData[row][lead];
 
-				for (int j = 0; j < Rows; j++)
+				for (length_t j = 0; j < Rows; j++)
 				{
 					if (j != row)
-						_mData[j] -= _mData[row] * _mData[j][lead];
+						result._mData[j] -= result._mData[row] * result._mData[j][lead];
 				}
 
 				lead++;
 			}
 
-			return *this;
+			return result;
 		}
 
 		T determinant() const
@@ -115,20 +116,21 @@ struct Matrix
 			return T();
 		}
 
-		Matrix inverse()
+		Matrix inverse() const
 		{
+			Matrix result = *this;
 			Matrix identity;
-			int lead = 0;
+			length_t lead = 0;
 
 			// compute the reduced row echelon form of the matrix
 			// and mirror the transformations on an identity matrix
-			for (int row = 0; row < Rows; row++)
+			for (length_t row = 0; row < Rows; row++)
 			{
 				if (Columns <= lead)
 					break ;
 
-				int i = row;
-				while (lead != Columns && _mData[i][lead] == 0)
+				length_t i = row;
+				while (lead != Columns && result._mData[i][lead] == 0)
 				{
 					i++;
 					if (i == Rows)
@@ -143,18 +145,18 @@ struct Matrix
 				
 				if (i != row)
 				{
-					std::swap(_mData[i], _mData[row]);
+					std::swap(result._mData[i], result._mData[row]);
 					std::swap(identity._mData[i], identity._mData[row]);
 				}
-				identity._mData[row] /= _mData[row][lead];
-				_mData[row] /= _mData[row][lead];
+				identity._mData[row] /= result._mData[row][lead];
+				result._mData[row] /= result._mData[row][lead];
 
-				for (int j = 0; j < Rows; j++)
+				for (length_t j = 0; j < Rows; j++)
 				{
 					if (j != row)
 					{
-						identity._mData[j] -= identity._mData[row] * _mData[j][lead];
-						_mData[j] -= _mData[row] * _mData[j][lead];
+						identity._mData[j] -= identity._mData[row] * result._mData[j][lead];
+						result._mData[j] -= result._mData[row] * result._mData[j][lead];
 					}
 				}
 
@@ -167,13 +169,27 @@ struct Matrix
 			{
 				for (size_t j = 0; j < _mData.size(); j++)
 				{
-					if (_mData[i][j] != (i == j))
+					if (result._mData[i][j] != (i == j))
 						throw std::invalid_argument("Singular matrices have no inverse");
 				}
 			}
+			return identity;
+		}
 
-			*this = identity;
-			return *this;
+		T rank() const
+		{
+			const Matrix reduced = row_echelon();
+
+			length_t rank = 0;
+			for (length_t i = 0; i < reduced._mData.size(); i++)
+			{
+				length_t j = 0;
+				while (j != Columns && reduced[i][j] == 0)
+					j++;
+				if (j != Columns)
+					rank++;
+			}
+			return rank;
 		}
 
 		Matrix& operator=(const Matrix& rhs)
