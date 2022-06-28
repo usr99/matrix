@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 01:18:28 by mamartin          #+#    #+#             */
-/*   Updated: 2022/06/24 14:22:22 by mamartin         ###   ########.fr       */
+/*   Updated: 2022/06/27 21:32:22 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include <iomanip>
 #include <iostream>
-#include "lib.hpp"
+#include "utils.hpp"
 #include "Vector.hpp"
 #include "Matrix.hpp"
 
@@ -33,5 +33,6 @@ void ex10();
 void ex11();
 void ex12();
 void ex13();
+void ex14();
 
 #endif
