@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/05 15:20:58 by mamartin          #+#    #+#             */
-/*   Updated: 2022/06/24 16:35:08 by mamartin         ###   ########.fr       */
+/*   Updated: 2022/06/26 17:56:40 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 # include <vector>
 # include <functional>
 # include <algorithm>
-# include <cmath>
 # include <numeric>
+# include <cmath>
 
-# include "lib.hpp"
+# include "utils.hpp"
 
 typedef unsigned short length_t;
 
@@ -51,19 +51,19 @@ public:
 	float norm_1() const
 	{
 		return std::accumulate(_mData.begin(), _mData.end(), 0.f, [](T sum, T value) {
-			return sum + abs(value);
+			return sum + my_abs(value);
 		});
 	}
 
 	float norm() const
 	{
-		return std::pow(dot(*this), 0.5);
+		return my_pow(dot(*this), 0.5);
 	}
 
 	float norm_inf() const
 	{
 		return *std::max_element(_mData.begin(), _mData.end(), [](T a, T b) {
-			return (abs(a) < abs(b));
+			return (my_abs(a) < my_abs(b));
 		});
 	}
 
@@ -181,6 +181,12 @@ Vector<L, T> linear_combination(const std::vector<Vector<L, T>>& u, const std::v
 	for (size_t i = 0; i < u.size(); i++)
 		result += u[i] * coefs[i];
 	return result;
+}
+
+template <typename T>
+T lerp(const T& u, const T& v, float t)
+{
+	return std::fma((v - u), t, u);
 }
 
 template <length_t L, typename T>
