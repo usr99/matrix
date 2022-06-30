@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/05 15:20:58 by mamartin          #+#    #+#             */
-/*   Updated: 2022/06/30 10:55:38 by mamartin         ###   ########.fr       */
+/*   Updated: 2022/06/30 15:55:40 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,15 @@ public:
 
 	float norm() const
 	{
-		return my_pow(dot(*this), 0.5);
+		return std::pow(dot(*this), 0.5);
 	}
 
 	float norm_inf() const
 	{
-		return *std::max_element(_mData.begin(), _mData.end(), [](T a, T b) {
+		T max = *std::max_element(_mData.begin(), _mData.end(), [](T a, T b) {
 			return (my_abs(a) < my_abs(b));
 		});
+		return my_abs(max);
 	}
 
 	/* Capacity & Element access */
@@ -146,9 +147,10 @@ public:
 
 	friend std::ostream& operator<<(std::ostream &os, const Vector&v)
 	{
+		os << '[';
 		std::for_each(v._mData.begin(), v._mData.end() - 1, [&os](T val)
 					  { os << val << ", "; });
-		os << v._mData.back();
+		os << v._mData.back() << ']';
 		return os;
 	}
 
