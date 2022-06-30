@@ -1,6 +1,6 @@
 TARGET = tester.out
 INC = ./include
-SRC = main.cpp ex00.cpp ex01.cpp ex02.cpp ex03.cpp ex04.cpp ex05.cpp ex06.cpp ex07.cpp ex08.cpp ex09.cpp ex10.cpp ex11.cpp ex12.cpp ex13.cpp ex14.cpp utils.cpp
+SRC = main.cpp ex00.cpp ex01.cpp ex02.cpp ex03.cpp ex04.cpp ex05.cpp ex06.cpp ex07.cpp ex08.cpp ex09.cpp ex10.cpp ex11.cpp ex12.cpp ex13.cpp
 SRCDIR = ./src
 OBJ = ${SRC:.cpp=.o}
 

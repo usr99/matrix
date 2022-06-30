@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/05 15:20:58 by mamartin          #+#    #+#             */
-/*   Updated: 2022/06/26 17:56:40 by mamartin         ###   ########.fr       */
+/*   Updated: 2022/06/30 10:55:38 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,10 +146,9 @@ public:
 
 	friend std::ostream& operator<<(std::ostream &os, const Vector&v)
 	{
-		os << '[';
 		std::for_each(v._mData.begin(), v._mData.end() - 1, [&os](T val)
 					  { os << val << ", "; });
-		os << v._mData.back() << ']';
+		os << v._mData.back();
 		return os;
 	}
 
