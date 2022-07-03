@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/05 15:24:38 by mamartin          #+#    #+#             */
-/*   Updated: 2022/06/24 17:00:36 by mamartin         ###   ########.fr       */
+/*   Updated: 2022/07/03 15:13:51 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,25 +129,8 @@ struct Matrix
 				if (Columns <= lead)
 					break ;
 
-				length_t i = row;
-				while (lead != Columns && result._mData[i][lead] == 0)
-				{
-					i++;
-					if (i == Rows)
-					{
-						i = row;
-						lead++;
-					}
-
-				}
-				if (Columns == lead)
-					break ;
-				
-				if (i != row)
-				{
-					std::swap(result._mData[i], result._mData[row]);
-					std::swap(identity._mData[i], identity._mData[row]);
-				}
+				if (result._mData[row][lead] == 0)
+					throw std::invalid_argument("Singular and non-square matrices have no inverse");
 				identity._mData[row] /= result._mData[row][lead];
 				result._mData[row] /= result._mData[row][lead];
 
@@ -162,33 +145,48 @@ struct Matrix
 
 				lead++;
 			}
-
-			// check that the reduced row echelon form is an identity matrix
-			// if not, then the matrix was singular so it has no inverse
-			for (size_t i = 0; i < _mData.size(); i++)
-			{
-				for (size_t j = 0; j < _mData.size(); j++)
-				{
-					if (result._mData[i][j] != (i == j))
-						throw std::invalid_argument("Singular matrices have no inverse");
-				}
-			}
 			return identity;
 		}
 
 		T rank() const
 		{
-			const Matrix reduced = row_echelon();
-
 			length_t rank = 0;
-			for (length_t i = 0; i < reduced._mData.size(); i++)
+
+			Matrix result = *this;
+			length_t lead = 0;
+
+			for (length_t row = 0; row < Rows; row++)
 			{
-				length_t j = 0;
-				while (j != Columns && reduced[i][j] == 0)
-					j++;
-				if (j != Columns)
-					rank++;
+				if (Columns <= lead)
+					return rank;
+
+				length_t i = row;
+				while (result._mData[i][lead] == 0)
+				{
+					i++;
+					if (i == Rows)
+					{
+						i = row;
+						lead++;
+						if (Columns == lead)
+							return rank;
+					}
+				}
+
+				if (i != row)
+					std::swap(result._mData[i], result._mData[row]);
+				result._mData[row] /= result._mData[row][lead];
+
+				for (length_t j = 0; j < Rows; j++)
+				{
+					if (j != row)
+						result._mData[j] -= result._mData[row] * result._mData[j][lead];
+				}
+
+				lead++;
+				rank++;
 			}
+
 			return rank;
 		}
 

@@ -6,51 +6,53 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 12:39:39 by mamartin          #+#    #+#             */
-/*   Updated: 2022/06/24 14:19:35 by mamartin         ###   ########.fr       */
+/*   Updated: 2022/07/02 18:35:49 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Tests.hpp"
 
-void ex12()
+template <typename T>
+void test_inverse(T matrix)
 {
-	{
-		Matrix<3, 3, double> m;
-		std::cout << m << '\n';
-		std::cout << m.inverse() << "\n\n";
-	}
+	try {
+		std::cout << YELLOW << "A =\n" << matrix << BLUE;
 
-	try
-	{
-		Matrix<3, 3, double> m({
-			{ 1, 2, 3 },
-			{ 4, 5, 6 },
-			{ 7, 8, 9 },
-		});
-		std::cout << m << '\n';
-		std::cout << m.inverse() << "\n\n";
-	} 
+		auto inv = matrix.inverse();
+		std::cout << "A⁻¹ =\n" << GREEN << inv << '\n';
+	}
 	catch (const std::exception& e)
 	{
 		std::cout << e.what() << "\n\n";
 	}
+}
 
-	{
-		Matrix<2, 2, double> m({
-			{ 3, 2 },
-			{ 4, 1 }
-		});
-		std::cout << m << '\n';
-		std::cout << m.inverse() << "\n\n";
-	}	
+void ex12()
+{
+	std::cout << PURPLE << "ex12 - Inverse" << RESET << '\n';
 
-	{
-		Matrix<3, 3, double> m({
-			{ 1,  0, -1 },
-			{ 1, -1,  0 },
-			{ 1, -1,  1 }
-		});
-		std::cout << m << '\n';
-		std::cout << m.inverse() << "\n\n";
-	}	
+	std::cout << BLUE << "\nBasic tests" << RESET << '\n';
+	test_inverse(Matrix<3, 3, double>());
+	test_inverse(Matrix<3, 3, double>() * 2);
+	test_inverse<Matrix<3, 3, double>>({
+		{ 8, 5, -2 },
+		{ 4, 7, 20 },
+		{ 7, 6, 1 }
+	});
+
+	std::cout << BLUE << "\nMore tests" << RESET << '\n';
+	test_inverse<Matrix<2, 2, double>>({
+		{ 3, 2 },
+		{ 4, 1 }
+	});
+	test_inverse<Matrix<3, 3, double>>({
+		{ 1, 2, 3 },
+		{ 4, 5, 6 },
+		{ 7, 8, 9 }
+	});
+	test_inverse<Matrix<3, 3, double>>({
+		{ 1,  0, -1 },
+		{ 1, -1,  0 },
+		{ 1, -1,  1 }
+	});
 }

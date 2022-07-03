@@ -5,7 +5,7 @@ SRCDIR = ./src
 OBJ = ${SRC:.cpp=.o}
 
 CC = g++
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 %.o: ${SRCDIR}/%.cpp
 	${CC} ${CFLAGS} -I ${INC} -c $< -o $@

@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 16:02:04 by mamartin          #+#    #+#             */
-/*   Updated: 2022/06/24 12:42:02 by mamartin         ###   ########.fr       */
+/*   Updated: 2022/07/02 18:28:50 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,75 +67,52 @@ double Matrix<4, 4, double>::determinant() const
 	return det;
 }
 
+template <typename T>
+void test_determinant(T matrix)
+{
+	std::cout << YELLOW << "A =\n" << matrix << BLUE << "det(A) = " << GREEN << matrix.determinant() << "\n\n";
+}
+
 void ex11()
 {
-	{
-		Matrix<2, 2, double> m({
-			{  1, -1 },
-			{ -1,  1 },
-		});
+	std::cout << PURPLE << "ex11 - Determinant" << RESET << '\n';
 
-		std::cout << m.determinant() << '\n';
-	}
+	std::cout << BLUE << "\nBasic tests" << RESET << '\n';
+	test_determinant<Matrix<2, 2, double>>({
+		{  1, -1 },
+		{ -1,  1 }
+	});
+	test_determinant<Matrix<3, 3, double>>({
+		{  2, 0, 0 },
+		{  0, 2, 0 },
+		{  0, 0, 2 }		
+	});
+	test_determinant<Matrix<3, 3, double>>({
+		{  8, 5, -2 },
+		{  4, 7,  20 },
+		{  7, 6,  1 }		
+	});
+	test_determinant<Matrix<4, 4, double>>({
+		{  8,  5, -2, 4 },
+		{  4,  2.5, 20, 4 },
+		{  8,  5, 1, 4 },
+		{  28, -4, 17, 1 }
+	});
 
-	{
-		Matrix<3, 3, double> m({
-			{  2, 0, 0 },
-			{  0, 2, 0 },
-			{  0, 0, 2 },
-		});
-
-		std::cout << m.determinant() << '\n';
-	}
-
-	{
-		Matrix<3, 3, double> m({
-			{  8, 5, -2 },
-			{  4, 7,  20 },
-			{  7, 6,  1 },
-		});
-
-		std::cout << m.determinant() << '\n';
-	}
-
-	{
-		Matrix<4, 4, double> m({
-			{  8,  5, -2, 4 },
-			{  4,  2.5, 20, 4 },
-			{  8,  5, 1, 4 },
-			{  28, -4, 17, 1 }
-		});
-
-		std::cout << m.determinant() << '\n';
-	}
-
-	{
-		Matrix<2, 2, double> m({
-			{  18, 21 },
-			{ -42, 3 },
-		});
-
-		std::cout << m.determinant() << '\n';
-	}
-
-	{
-		Matrix<3, 3, double> m({
-			{  2, 1, 3 },
-			{ -1, 1, 0 },
-			{ -2, 4, 1 },
-		});
-
-		std::cout << m.determinant() << '\n';
-	}
-
-	{
-		Matrix<4, 4, double> m({
-			{  2,  4, 0, 6 },
-			{ -1,  0, 7, 0 },
-			{  3,  7, 0, 0 },
-			{  4, -2, 0, 5 },
-		});
-
-		std::cout << m.determinant() << '\n';
-	}
+	std::cout << BLUE << "\nMore tests" << RESET << '\n';
+	test_determinant<Matrix<2, 2, double>>({
+		{  18, 21 },
+		{ -42, 3 }
+	});
+	test_determinant<Matrix<3, 3, double>>({
+		{  2, 1, 3 },
+		{ -1, 1, 0 },
+		{ -2, 4, 1 }
+	});
+	test_determinant<Matrix<4, 4, double>>({
+		{  2,  4, 0, 6 },
+		{ -1,  0, 7, 0 },
+		{  3,  7, 0, 0 },
+		{  4, -2, 0, 5 }		
+	});	
 }
