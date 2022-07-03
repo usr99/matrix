@@ -13,8 +13,6 @@
 #ifndef UTILS_HPP
 # define UTILS_HPP
 
-# define PI 3.141592653589793238462643383279502884L
-
 template <typename T>
 T my_abs(T value)
 {
